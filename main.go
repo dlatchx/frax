@@ -36,8 +36,6 @@ func ptr(i int) unsafe.Pointer {
 }
 
 func main() {
-	go audiomain()
-
 	log.Debug("Initializing GLFW")
 	err := glfw.Init()
 	if err != nil {
