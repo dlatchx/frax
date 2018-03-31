@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	log     = logging.MustGetLogger("terra")
+	log     = logging.MustGetLogger("frax")
 	nullptr = unsafe.Pointer(uintptr(0))
 )
 
@@ -80,10 +80,22 @@ func main() {
 	defer shaderProg.Delete()
 	log.Debug("Shaders loaded")
 
+	var max_it int32 = 10
+
 	window.SetKeyCallback(func(window *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		if key == glfw.KeyEscape && action == glfw.Press {
 			log.Notice("User pressed Esc key")
 			window.SetShouldClose(true)
+		}
+
+		if key == glfw.KeyUp && (action == glfw.Press || action == glfw.Repeat) {
+			max_it++
+			log.Infof("max_it = %d", max_it)
+		}
+
+		if key == glfw.KeyDown && (action == glfw.Press || action == glfw.Repeat) {
+			max_it--
+			log.Infof("max_it = %d", max_it)
 		}
 	})
 
@@ -191,6 +203,8 @@ func main() {
 		// gl.Uniform2f(shaderProg.GetUniformLocation("c"), float32(-0.6), float32(0.6))
 		gl.Uniform2f(shaderProg.GetUniformLocation("c"), float32(cRe), float32(cIm))
 		// gl.Uniform2f(shaderProg.GetUniformLocation("c"), float32(0.7885*math.Cos(glfw.GetTime()/5)), float32(0.7885*math.Sin(glfw.GetTime()/5)))
+
+		gl.Uniform1i(shaderProg.GetUniformLocation("max_it"), max_it)
 
 		gl.BindVertexArray(vao)
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nullptr)

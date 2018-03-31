@@ -8,6 +8,7 @@
 
 uniform float scale;
 uniform vec2 c;
+uniform int max_it;
 
 in vec2 position;
 
@@ -18,8 +19,6 @@ vec3 hsv2rgb(vec3 c) {
 }
 
 void main() {
-  int max_it = int(min(2000, 64 / scale));
-
   vec2 z = position;
   int i = 0;
   while (i < max_it && (z.x * z.x + z.y * z.y) < 4.0f) {
